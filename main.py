@@ -1,4 +1,4 @@
-import datetime, os, shutil
+import datetime, os, shutil, sys
 
 # Directory of the My Clippings.txt file
 file_dir = "/media/{your username}/Kindle/documents/My Clippings.txt"
@@ -10,7 +10,11 @@ to avoid the same notes being re-written each time you run this script
 """
 hist_dir = "/home/{your username}/Documents/Kindle Notes/history/"
 
-notes = open(file_dir, mode='r').read()
+try:
+        notes = open(file_dir, mode='r').read()
+except FileNotFoundError:
+        print("No MyClippings.txt found!")
+        sys.exit()
 
 # Kindle ends each note with '=========='
 each_note = notes.split('==========')
@@ -31,3 +35,4 @@ for n in range(len(each_note)-2):
 
 "Move the notes to local drive to prevent multiple versions of the same notes"
 shutil.move(file_dir, hist_dir+'notefile'+str(datetime.datetime.now())+'.txt')
+print("All done!")
